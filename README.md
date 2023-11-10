@@ -5,7 +5,7 @@ com.io7m.northpike.packaging
 [![Maven Central (snapshot)](https://img.shields.io/nexus/s/com.io7m.northpike.packaging/com.io7m.northpike.packaging?server=https%3A%2F%2Fs01.oss.sonatype.org&style=flat-square)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/io7m/northpike/packaging/)
 [![Codecov](https://img.shields.io/codecov/c/github/io7m/northpike.packaging.svg?style=flat-square)](https://codecov.io/gh/io7m/northpike.packaging)
 
-![com.io7m.northpike.packaging](./src/site/resources/com.io7m.northpike.packaging.jpg?raw=true)
+![com.io7m.northpike.packaging](./src/site/resources/northpike.packaging.jpg?raw=true)
 
 | JVM | Platform | Status |
 |-----|----------|--------|
