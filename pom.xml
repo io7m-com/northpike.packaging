@@ -21,6 +21,7 @@
   <url>https://www.io7m.com/software/northpike</url>
 
   <properties>
+    <io7m.api.previousVersion>${project.version}</io7m.api.previousVersion>
   </properties>
 
   <licenses>
