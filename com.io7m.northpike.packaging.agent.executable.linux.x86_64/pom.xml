@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.io7m.northpike.packaging</groupId>
+    <artifactId>com.io7m.northpike.packaging</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>com.io7m.northpike.packaging.agent.executable.linux.x86_64</artifactId>
+
+  <packaging>jar</packaging>
+  <name>com.io7m.northpike.packaging.agent.executable.linux.x86_64</name>
+  <description>Continuous integration (Platform-specific packaging [Linux x86_64 Agent Executable])</description>
+  <url>https://www.io7m.com/software/northpike</url>
+
+  <properties>
+    <mdep.analyze.skip>true</mdep.analyze.skip>
+
+    <packaging.appName>northpike-agent</packaging.appName>
+    <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
+    <packaging.extrasDirectory>${project.build.directory}/app-extras</packaging.extrasDirectory>
+    <packaging.icon128>${project.basedir}/../src/site/resources/icon64.png</packaging.icon128>
+    <packaging.icon32>${project.basedir}/../src/site/resources/icon32.png</packaging.icon32>
+    <packaging.icon64>${project.basedir}/../src/site/resources/icon64.png</packaging.icon64>
+    <packaging.jars>${packaging.distribution}/northpike-agent/lib</packaging.jars>
+    <packaging.jdk>${project.build.directory}/jdks/temurin-jdk/jdk-${packaging.javaVersion}</packaging.jdk>
+    <packaging.jre>${project.build.directory}/jdks/temurin-jre/jdk-${packaging.javaVersion}-jre</packaging.jre>
+    <packaging.licenseFile>${project.basedir}/../README-LICENSE.txt</packaging.licenseFile>
+    <packaging.mainModule>com.io7m.northpike.agent.main</packaging.mainModule>
+    <packaging.outputDirectory>${project.build.directory}</packaging.outputDirectory>
+    <packaging.resourceDirectory>${project.build.directory}/app-resources</packaging.resourceDirectory>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.northpike.packaging.support</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>executable.linux.x86_64</id>
+      <activation>
+        <os>
+          <name>linux</name>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jreleaser</groupId>
+            <artifactId>jdks-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>download-jdk</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>setup-disco</goal>
+                </goals>
+                <configuration>
+                  <pkgs>
+                    <pkg>
+                      <name>temurin-jdk</name>
+                      <platform>linux-x86_64</platform>
+                      <version>${packaging.javaVersion}</version>
+                      <distribution>temurin</distribution>
+                      <archiveType>tar.gz</archiveType>
+                      <packageType>jdk</packageType>
+                    </pkg>
+                    <pkg>
+                      <name>temurin-jre</name>
+                      <platform>linux-x86_64</platform>
+                      <version>${packaging.javaVersion}</version>
+                      <distribution>temurin</distribution>
+                      <archiveType>tar.gz</archiveType>
+                      <packageType>jre</packageType>
+                    </pkg>
+                  </pkgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-properties</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>write-project-properties</goal>
+                </goals>
+                <configuration>
+                  <outputFile>${project.build.directory}/jpackage.properties</outputFile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>com.io7m.northpike</groupId>
+                      <artifactId>com.io7m.northpike.agent.main</artifactId>
+                      <version>${project.version}</version>
+                      <classifier>distribution</classifier>
+                      <type>zip</type>
+                    </artifactItem>
+                  </artifactItems>
+                  <outputDirectory>${packaging.distribution}</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>exec-package</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <mainClass>com.io7m.northpike.packaging.support.JPAppImageMain</mainClass>
+                  <arguments>
+                    <argument>${project.build.directory}/jpackage.properties</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

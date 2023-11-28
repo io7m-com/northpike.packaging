@@ -20,8 +20,18 @@
   <description>Continuous integration (Platform-specific packaging)</description>
   <url>https://www.io7m.com/software/northpike</url>
 
+  <modules>
+    <module>com.io7m.northpike.packaging.agent.executable.linux.x86_64</module>
+    <module>com.io7m.northpike.packaging.support</module>
+  </modules>
+
   <properties>
     <io7m.api.previousVersion>${project.version}</io7m.api.previousVersion>
+
+    <packaging.appVersion>${project.version}</packaging.appVersion>
+    <packaging.javaVersion>21.0.1+12</packaging.javaVersion>
+    <packaging.scriptsURL>${project.scm.url}</packaging.scriptsURL>
+    <packaging.sourceURL>${project.distributionManagement.site.url}</packaging.sourceURL>
   </properties>
 
   <licenses>
@@ -71,5 +81,53 @@
     <system>GitHub Actions</system>
     <url>https://www.github.com/northpike.packaging/actions</url>
   </ciManagement>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.7</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.4.11</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.15.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>1.24.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.io7m.jmulticlose</groupId>
+        <artifactId>com.io7m.jmulticlose.core</artifactId>
+        <version>1.1.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>properties-maven-plugin</artifactId>
+          <version>1.1.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.jreleaser</groupId>
+          <artifactId>jdks-maven-plugin</artifactId>
+          <version>1.9.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>
