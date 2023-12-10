@@ -157,7 +157,7 @@
                 </goals>
                 <configuration>
                   <executable>
-                    ${project.build.directory}/northpike-agent/bin/northpike-agent
+                    ${project.build.directory}/northpike-agent/northpike-agent.exe
                   </executable>
                 </configuration>
               </execution>
