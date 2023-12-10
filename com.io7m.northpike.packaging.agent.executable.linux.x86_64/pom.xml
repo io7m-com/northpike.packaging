@@ -21,6 +21,8 @@
   <properties>
     <mdep.analyze.skip>true</mdep.analyze.skip>
 
+    <packaging.platform.os>linux</packaging.platform.os>
+    <packaging.platform.arch>x86_64</packaging.platform.arch>
     <packaging.appName>northpike-agent</packaging.appName>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
     <packaging.extrasDirectory>${project.build.directory}/app-extras</packaging.extrasDirectory>

@@ -81,6 +81,11 @@ public final class JPAppImageMain
       properties.load(stream);
     }
 
+    final var osName =
+      properties.getProperty("packaging.platform.os");
+    final var archName =
+      properties.getProperty("packaging.platform.arch");
+
     final var icon32 =
       Paths.get(properties.getProperty("packaging.icon32"))
         .normalize();
@@ -132,7 +137,14 @@ public final class JPAppImageMain
 
     final var outputArchive =
       outputDirectory.resolve(
-        String.format("%s-%s.tgz".formatted(appName, appVersion))
+        String.format(
+          "%s_%s_%s-%s.tgz".formatted(
+            appName,
+            appVersion,
+            osName,
+            archName
+          )
+        )
       );
 
     final var jpackagePath =
