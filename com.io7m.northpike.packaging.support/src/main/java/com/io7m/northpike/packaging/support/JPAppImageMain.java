@@ -425,9 +425,6 @@ public final class JPAppImageMain
             .resolve("classes_nocoops.jsa"),
           runtimeDir
             .resolve("legal"),
-          runtimeDir
-            .resolve("conf")
-            .resolve("sdp"),
           outputApp.resolve("app")
             .resolve(".jpackage.xml")
         );
