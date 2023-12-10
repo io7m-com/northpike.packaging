@@ -20,6 +20,9 @@ package com.io7m.northpike.packaging.support;
 import com.io7m.jmulticlose.core.CloseableCollection;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.Zip64Mode;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.io.file.PathUtils;
@@ -30,13 +33,11 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -63,6 +64,11 @@ public final class JPAppImageMain
   private JPAppImageMain()
   {
 
+  }
+
+  private enum ArchiveType {
+    TGZ,
+    ZIP
   }
 
   /**
@@ -105,6 +111,8 @@ public final class JPAppImageMain
       properties.getProperty("packaging.mainModule");
     final var appType =
       properties.getProperty("packaging.appType");
+    final var archiveType =
+      ArchiveType.valueOf(properties.getProperty("packaging.archiveType"));
 
     final var packageJdk =
       Paths.get(properties.getProperty("packaging.jdk"))
@@ -141,11 +149,15 @@ public final class JPAppImageMain
     final var outputArchive =
       outputDirectory.resolve(
         String.format(
-          "%s_%s_%s-%s.tgz".formatted(
+          "%s_%s_%s-%s.%s".formatted(
             appName,
             appVersion,
             osName,
-            archName
+            archName,
+            switch (archiveType) {
+              case TGZ -> "tgz";
+              case ZIP -> "zip";
+            }
           )
         )
       );
@@ -214,7 +226,15 @@ public final class JPAppImageMain
     executeProgramAndLog(argumentList);
     cleanUpImage(outputDirectory, appName);
     createExtras(outputImage, distribution, properties);
-    createArchive(outputArchive, outputImage);
+
+    switch (archiveType) {
+      case TGZ -> {
+        createArchiveTGZ(outputArchive, outputImage);
+      }
+      case ZIP -> {
+        createArchiveZip(outputArchive, outputImage);
+      }
+    }
   }
 
   private static void createExtras(
@@ -275,7 +295,86 @@ public final class JPAppImageMain
     );
   }
 
-  private static void createArchive(
+  private static void createArchiveZip(
+    final Path outputArchive,
+    final Path outputImage)
+    throws Exception
+  {
+    final List<Path> directories;
+    try (var fileStream = Files.walk(outputImage)) {
+      directories = fileStream.filter(Files::isDirectory)
+        .sorted()
+        .toList();
+
+    }
+
+    final List<Path> files;
+    try (var fileStream = Files.walk(outputImage)) {
+      files = fileStream.filter(Files::isRegularFile)
+        .sorted()
+        .toList();
+    }
+
+    try (var resources = CloseableCollection.create()) {
+      final var outputStream =
+        resources.add(Files.newOutputStream(
+          outputArchive,
+          CREATE,
+          TRUNCATE_EXISTING)
+        );
+      final var bufferedStream =
+        resources.add(new BufferedOutputStream(outputStream));
+
+      final var zipOut =
+        resources.add(new ZipArchiveOutputStream(bufferedStream));
+      zipOut.setLevel(Deflater.BEST_COMPRESSION);
+      zipOut.setUseZip64(Zip64Mode.Always);
+
+      for (final var directory : directories) {
+        final var name =
+          outputImage.getParent()
+            .relativize(directory)
+            .normalize();
+
+        final var entry = new ZipArchiveEntry(name.toString());
+        entry.setCreationTime(FILE_TIME);
+        entry.setLastModifiedTime(FILE_TIME);
+        entry.setLastAccessTime(FILE_TIME);
+        entry.setTime(FILE_TIME);
+        entry.setSize(0L);
+
+        LOG.info("Zip: {}", name);
+        zipOut.putArchiveEntry(entry);
+        zipOut.closeArchiveEntry();
+      }
+
+      for (final var file : files) {
+        final var name =
+          outputImage.getParent()
+            .relativize(file)
+            .normalize();
+
+        final var entry = new ZipArchiveEntry(name.toString());
+        entry.setCreationTime(FILE_TIME);
+        entry.setLastModifiedTime(FILE_TIME);
+        entry.setLastAccessTime(FILE_TIME);
+        entry.setTime(FILE_TIME);
+        entry.setSize(Files.size(file));
+
+        LOG.info("Zip: {}", name);
+        zipOut.putArchiveEntry(entry);
+        Files.copy(file, zipOut);
+        zipOut.closeArchiveEntry();
+      }
+
+      zipOut.flush();
+      zipOut.finish();
+      bufferedStream.flush();
+      outputStream.flush();
+    }
+  }
+
+  private static void createArchiveTGZ(
     final Path outputArchive,
     final Path outputImage)
     throws Exception
@@ -438,14 +537,24 @@ public final class JPAppImageMain
     final var outputApp =
       outputDirectory.resolve(appName);
 
-    /*
-     * Don't bother trying to reduce Windows images; they are too prone to
-     * failure.
-     */
-
     final List<Path> toRemove;
     if (SystemUtils.IS_OS_WINDOWS) {
-      toRemove = List.of();
+      final var runtimeDir =
+        outputApp.resolve("runtime");
+
+      toRemove =
+        List.of(
+          runtimeDir.resolve("bin")
+            .resolve("server")
+            .resolve("classes.jsa"),
+          runtimeDir.resolve("bin")
+            .resolve("server")
+            .resolve("classes_nocoops.jsa"),
+          runtimeDir
+            .resolve("legal"),
+          outputApp.resolve("app")
+            .resolve(".jpackage.xml")
+        );
     } else {
       final var runtimeDir =
         outputApp.resolve("lib")
