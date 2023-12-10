@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.io7m.northpike.packaging</groupId>
+    <artifactId>com.io7m.northpike.packaging</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>com.io7m.northpike.packaging.agent.msi.windows.x86_64</artifactId>
+
+  <packaging>jar</packaging>
+  <name>com.io7m.northpike.packaging.agent.msi.windows.x86_64</name>
+  <description>Continuous integration (Platform-specific packaging [Windows x86_64 Agent Executable])</description>
+  <url>https://www.io7m.com/software/northpike</url>
+
+  <properties>
+    <mdep.analyze.skip>true</mdep.analyze.skip>
+
+    <packaging.platform.os>windows</packaging.platform.os>
+    <packaging.platform.arch>x86_64</packaging.platform.arch>
+    <packaging.appName>northpike-agent</packaging.appName>
+    <packaging.archiveType>ZIP</packaging.archiveType>
+    <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
+    <packaging.icon128>${project.basedir}/../src/site/resources/icon.ico</packaging.icon128>
+    <packaging.icon32>${project.basedir}/../src/site/resources/icon.ico</packaging.icon32>
+    <packaging.icon64>${project.basedir}/../src/site/resources/icon.ico</packaging.icon64>
+    <packaging.outputDirectory>${project.build.directory}</packaging.outputDirectory>
+    <packaging.resourceDirectory>${project.build.directory}/app-resources</packaging.resourceDirectory>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.northpike.packaging.support</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>msi.windows.x86_64</id>
+      <activation>
+        <os>
+          <family>windows</family>
+          <arch>amd64</arch>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-properties</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>write-project-properties</goal>
+                </goals>
+                <configuration>
+                  <outputFile>${project.build.directory}/inno.properties</outputFile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>exec-package</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <mainClass>com.io7m.northpike.packaging.support.InnoSetupMain</mainClass>
+                  <arguments>
+                    <argument>${project.build.directory}/jpackage.properties</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
