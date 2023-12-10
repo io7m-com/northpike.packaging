@@ -328,7 +328,7 @@ public final class JPAppImageMain
       final var zipOut =
         resources.add(new ZipArchiveOutputStream(bufferedStream));
       zipOut.setLevel(Deflater.BEST_COMPRESSION);
-      zipOut.setUseZip64(Zip64Mode.Always);
+      zipOut.setUseZip64(Zip64Mode.AlwaysWithCompatibility);
 
       for (final var directory : directories) {
         final var name =
@@ -336,7 +336,7 @@ public final class JPAppImageMain
             .relativize(directory)
             .normalize();
 
-        final var entry = new ZipArchiveEntry(name.toString());
+        final var entry = new ZipArchiveEntry(directory, name.toString());
         entry.setCreationTime(FILE_TIME);
         entry.setLastModifiedTime(FILE_TIME);
         entry.setLastAccessTime(FILE_TIME);
@@ -354,7 +354,7 @@ public final class JPAppImageMain
             .relativize(file)
             .normalize();
 
-        final var entry = new ZipArchiveEntry(name.toString());
+        final var entry = new ZipArchiveEntry(file, name.toString());
         entry.setCreationTime(FILE_TIME);
         entry.setLastModifiedTime(FILE_TIME);
         entry.setLastAccessTime(FILE_TIME);
@@ -424,7 +424,7 @@ public final class JPAppImageMain
             .relativize(directory)
             .normalize();
 
-        final var entry = new TarArchiveEntry(directory);
+        final var entry = new TarArchiveEntry(directory, name.toString());
         entry.setName(name.toString());
         entry.setCreationTime(FILE_TIME);
         entry.setLastModifiedTime(FILE_TIME);
@@ -445,7 +445,7 @@ public final class JPAppImageMain
             .relativize(file)
             .normalize();
 
-        final var entry = new TarArchiveEntry(file);
+        final var entry = new TarArchiveEntry(file, name.toString());
         entry.setName(name.toString());
         entry.setCreationTime(FILE_TIME);
         entry.setLastModifiedTime(FILE_TIME);
