@@ -23,6 +23,7 @@
 
     <packaging.platform.os>linux</packaging.platform.os>
     <packaging.platform.arch>x86_64</packaging.platform.arch>
+    <packaging.appType>CommandLine</packaging.appType>
     <packaging.appName>northpike-workexec</packaging.appName>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
     <packaging.extrasDirectory>${project.build.directory}/app-extras</packaging.extrasDirectory>

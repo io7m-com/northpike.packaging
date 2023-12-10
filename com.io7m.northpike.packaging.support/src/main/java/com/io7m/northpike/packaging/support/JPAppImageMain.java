@@ -38,6 +38,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.zip.Deflater;
 
@@ -102,6 +103,8 @@ public final class JPAppImageMain
       properties.getProperty("packaging.appVersion");
     final var mainModule =
       properties.getProperty("packaging.mainModule");
+    final var appType =
+      properties.getProperty("packaging.appType");
 
     final var packageJdk =
       Paths.get(properties.getProperty("packaging.jdk"))
@@ -186,6 +189,19 @@ public final class JPAppImageMain
     argumentList.add(resourceDirectory.toString());
     argumentList.add("--dest");
     argumentList.add(outputDirectory.toString());
+
+    switch (Objects.requireNonNull(appType, "appType")) {
+      case "CommandLine" -> {
+        if (SystemUtils.IS_OS_WINDOWS) {
+          argumentList.add("--win-console");
+        }
+      }
+      default -> {
+        throw new IllegalArgumentException(
+          "Unrecognized app type: %s".formatted(appType)
+        );
+      }
+    }
 
     for (int index = 0; index < argumentList.size(); ++index) {
       LOG.info(
