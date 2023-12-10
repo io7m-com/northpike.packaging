@@ -11,27 +11,27 @@
     <artifactId>com.io7m.northpike.packaging</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>com.io7m.northpike.packaging.agent.workexec.executable.linux.x86_64</artifactId>
+  <artifactId>com.io7m.northpike.packaging.shell.executable.linux.x86_64</artifactId>
 
   <packaging>jar</packaging>
-  <name>com.io7m.northpike.packaging.agent.workexec.executable.linux.x86_64</name>
-  <description>Continuous integration (Platform-specific packaging [Linux x86_64 WorkExec Executable])</description>
+  <name>com.io7m.northpike.packaging.shell.executable.linux.x86_64</name>
+  <description>Continuous integration (Platform-specific packaging [Linux x86_64 Shell Executable])</description>
   <url>https://www.io7m.com/software/northpike</url>
 
   <properties>
     <mdep.analyze.skip>true</mdep.analyze.skip>
 
-    <packaging.appName>northpike-workexec</packaging.appName>
+    <packaging.appName>northpike-shell</packaging.appName>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
     <packaging.extrasDirectory>${project.build.directory}/app-extras</packaging.extrasDirectory>
     <packaging.icon128>${project.basedir}/../src/site/resources/icon64.png</packaging.icon128>
     <packaging.icon32>${project.basedir}/../src/site/resources/icon32.png</packaging.icon32>
     <packaging.icon64>${project.basedir}/../src/site/resources/icon64.png</packaging.icon64>
-    <packaging.jars>${packaging.distribution}/northpike-workexec/lib</packaging.jars>
+    <packaging.jars>${packaging.distribution}/northpike-shell/lib</packaging.jars>
     <packaging.jdk>${project.build.directory}/jdks/temurin-jdk/jdk-${packaging.javaVersion}</packaging.jdk>
     <packaging.jre>${project.build.directory}/jdks/temurin-jre/jdk-${packaging.javaVersion}-jre</packaging.jre>
     <packaging.licenseFile>${project.basedir}/../README-LICENSE.txt</packaging.licenseFile>
-    <packaging.mainModule>com.io7m.northpike.agent.workexec.main</packaging.mainModule>
+    <packaging.mainModule>com.io7m.northpike.shell.main</packaging.mainModule>
     <packaging.outputDirectory>${project.build.directory}</packaging.outputDirectory>
     <packaging.resourceDirectory>${project.build.directory}/app-resources</packaging.resourceDirectory>
   </properties>
@@ -120,7 +120,7 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>com.io7m.northpike</groupId>
-                      <artifactId>com.io7m.northpike.agent.workexec.main</artifactId>
+                      <artifactId>com.io7m.northpike.shell.main</artifactId>
                       <version>${project.version}</version>
                       <classifier>distribution</classifier>
                       <type>zip</type>
@@ -146,21 +146,6 @@
                   <mainClass>com.io7m.northpike.packaging.support.JPAppImageMain</mainClass>
                   <arguments>
                     <argument>${project.build.directory}/jpackage.properties</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>exec-sanity</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>
-                    ${project.build.directory}/northpike-workexec/bin/northpike-workexec
-                  </executable>
-                  <arguments>
-                    <argument>environment</argument>
                   </arguments>
                 </configuration>
               </execution>

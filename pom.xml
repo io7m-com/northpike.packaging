@@ -23,6 +23,7 @@
   <modules>
     <module>com.io7m.northpike.packaging.agent.executable.linux.x86_64</module>
     <module>com.io7m.northpike.packaging.agent.workexec.executable.linux.x86_64</module>
+    <module>com.io7m.northpike.packaging.shell.executable.linux.x86_64</module>
     <module>com.io7m.northpike.packaging.support</module>
   </modules>
 
