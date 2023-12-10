@@ -49,7 +49,7 @@
       <id>executable.windows.x86_64</id>
       <activation>
         <os>
-          <name>windows</name>
+          <family>windows</family>
           <arch>amd64</arch>
         </os>
       </activation>
@@ -72,7 +72,7 @@
                       <platform>windows-x86_64</platform>
                       <version>${packaging.javaVersion}</version>
                       <distribution>temurin</distribution>
-                      <archiveType>tar.gz</archiveType>
+                      <archiveType>zip</archiveType>
                       <packageType>jdk</packageType>
                     </pkg>
                     <pkg>
@@ -80,7 +80,7 @@
                       <platform>windows-x86_64</platform>
                       <version>${packaging.javaVersion}</version>
                       <distribution>temurin</distribution>
-                      <archiveType>tar.gz</archiveType>
+                      <archiveType>zip</archiveType>
                       <packageType>jre</packageType>
                     </pkg>
                   </pkgs>
