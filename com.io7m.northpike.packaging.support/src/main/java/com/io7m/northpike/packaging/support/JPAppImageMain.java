@@ -36,6 +36,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.zip.Deflater;
@@ -409,37 +410,56 @@ public final class JPAppImageMain
     final var outputApp =
       outputDirectory.resolve(appName);
 
-    final var runtimeDir =
-      outputApp.resolve("lib")
-        .resolve("runtime");
+    final List<Path> toRemove;
+    if (SystemUtils.IS_OS_WINDOWS) {
+      final var runtimeDir =
+        outputApp.resolve("runtime");
 
-    final var toRemove =
-      List.of(
-        runtimeDir.resolve("lib")
-          .resolve("server")
-          .resolve("classes.jsa"),
-        runtimeDir.resolve("lib")
-          .resolve("server")
-          .resolve("classes_nocoops.jsa"),
-        runtimeDir
-          .resolve("bin"),
-        runtimeDir
-          .resolve("legal"),
-        runtimeDir
-          .resolve("conf")
-          .resolve("sdp"),
+      toRemove =
+        List.of(
+          runtimeDir.resolve("bin")
+            .resolve("server")
+            .resolve("classes.jsa"),
+          runtimeDir.resolve("bin")
+            .resolve("server")
+            .resolve("classes_nocoops.jsa"),
+          runtimeDir
+            .resolve("legal"),
+          runtimeDir
+            .resolve("conf")
+            .resolve("sdp"),
+          outputApp.resolve("app")
+            .resolve(".jpackage.xml")
+        );
+    } else {
+      final var runtimeDir =
         outputApp.resolve("lib")
-          .resolve("app")
-          .resolve(".jpackage.xml")
-      );
+          .resolve("runtime");
+
+      toRemove =
+        List.of(
+          runtimeDir.resolve("lib")
+            .resolve("server")
+            .resolve("classes.jsa"),
+          runtimeDir.resolve("lib")
+            .resolve("server")
+            .resolve("classes_nocoops.jsa"),
+          runtimeDir
+            .resolve("bin"),
+          runtimeDir
+            .resolve("legal"),
+          runtimeDir
+            .resolve("conf")
+            .resolve("sdp"),
+          outputApp.resolve("lib")
+            .resolve("app")
+            .resolve(".jpackage.xml")
+        );
+    }
 
     for (final var file : toRemove) {
       LOG.info("Remove {}", file);
-      try {
-        PathUtils.deleteDirectory(file);
-      } catch (final NoSuchFileException e) {
-        LOG.warn("No such file: {}", file);
-      }
+      PathUtils.deleteDirectory(file);
     }
   }
 }
