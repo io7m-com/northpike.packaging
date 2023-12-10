@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
@@ -434,7 +435,11 @@ public final class JPAppImageMain
 
     for (final var file : toRemove) {
       LOG.info("Remove {}", file);
-      PathUtils.deleteDirectory(file);
+      try {
+        PathUtils.deleteDirectory(file);
+      } catch (final NoSuchFileException e) {
+        LOG.warn("No such file: {}", file);
+      }
     }
   }
 }
