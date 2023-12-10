@@ -422,24 +422,14 @@ public final class JPAppImageMain
     final var outputApp =
       outputDirectory.resolve(appName);
 
+    /*
+     * Don't bother trying to reduce Windows images; they are too prone to
+     * failure.
+     */
+
     final List<Path> toRemove;
     if (SystemUtils.IS_OS_WINDOWS) {
-      final var runtimeDir =
-        outputApp.resolve("runtime");
-
-      toRemove =
-        List.of(
-          runtimeDir.resolve("bin")
-            .resolve("server")
-            .resolve("classes.jsa"),
-          runtimeDir.resolve("bin")
-            .resolve("server")
-            .resolve("classes_nocoops.jsa"),
-          runtimeDir
-            .resolve("legal"),
-          outputApp.resolve("app")
-            .resolve(".jpackage.xml")
-        );
+      toRemove = List.of();
     } else {
       final var runtimeDir =
         outputApp.resolve("lib")
