@@ -23,6 +23,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.apache.commons.io.file.PathUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,7 +91,7 @@ public final class JPAppImageMain
 
     final var appName =
       properties.getProperty("packaging.appName");
-    final var appVersion =
+    var appVersion =
       properties.getProperty("packaging.appVersion");
     final var mainModule =
       properties.getProperty("packaging.mainModule");
@@ -140,6 +141,15 @@ public final class JPAppImageMain
     Files.createDirectories(resourceDirectory);
 
     LOG.info("Executing jpackage...");
+
+    /*
+     * Windows evidently can't support anything other than purely numeric
+     * version numbers embedded in executables.
+     */
+
+    if (SystemUtils.IS_OS_WINDOWS) {
+      appVersion = appVersion.replaceAll("-SNAPSHOT", "");
+    }
 
     final var argumentList = new ArrayList<String>();
     argumentList.add(jpackagePath.toString());
