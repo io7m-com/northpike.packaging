@@ -11,11 +11,11 @@
     <artifactId>com.io7m.northpike.packaging</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>com.io7m.northpike.packaging.agent.msi.windows.x86_64</artifactId>
+  <artifactId>com.io7m.northpike.packaging.shell.msi.windows.x86_64</artifactId>
 
   <packaging>jar</packaging>
-  <name>com.io7m.northpike.packaging.agent.msi.windows.x86_64</name>
-  <description>Continuous integration (Platform-specific packaging [Windows x86_64 Agent MSI])</description>
+  <name>com.io7m.northpike.packaging.shell.msi.windows.x86_64</name>
+  <description>Continuous integration (Platform-specific packaging [Windows x86_64 Shell MSI])</description>
   <url>https://www.io7m.com/software/northpike</url>
 
   <properties>
@@ -23,8 +23,8 @@
 
     <packaging.platform.os>windows</packaging.platform.os>
     <packaging.platform.arch>x86_64</packaging.platform.arch>
-    <packaging.appName>northpike-agent</packaging.appName>
-    <packaging.appLongName>Northpike Agent</packaging.appLongName>
+    <packaging.appName>northpike-shell</packaging.appName>
+    <packaging.appLongName>Northpike Shell</packaging.appLongName>
     <packaging.archiveType>ZIP</packaging.archiveType>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
     <packaging.icon128>${project.basedir}/../src/site/resources/icon.ico</packaging.icon128>
@@ -33,8 +33,8 @@
     <packaging.outputDirectory>${project.build.directory}</packaging.outputDirectory>
     <packaging.resourceDirectory>${project.build.directory}/app-resources</packaging.resourceDirectory>
     <packaging.outputWixFile>${project.build.directory}/output.xml</packaging.outputWixFile>
-    <packaging.outputMSIFile>${project.build.directory}/northpike-agent_${project.version}_windows-x86_64.msi</packaging.outputMSIFile>
-    <packaging.upgradeCode>304c8008-636e-4463-89c1-4e585a7319bc</packaging.upgradeCode>
+    <packaging.outputMSIFile>${project.build.directory}/northpike-shell_${project.version}_windows-x86_64.msi</packaging.outputMSIFile>
+    <packaging.upgradeCode>e31b31d6-0635-409d-972a-7c0433db1b00</packaging.upgradeCode>
   </properties>
 
   <dependencies>
@@ -46,7 +46,7 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.northpike.packaging.agent.executable.windows.x86_64</artifactId>
+      <artifactId>com.io7m.northpike.packaging.shell.executable.windows.x86_64</artifactId>
       <version>${project.version}</version>
       <classifier>windows-x86_64</classifier>
       <type>zip</type>
@@ -95,7 +95,7 @@
                   <artifactItems>
                     <artifactItem>
                       <groupId>${project.groupId}</groupId>
-                      <artifactId>com.io7m.northpike.packaging.agent.executable.windows.x86_64</artifactId>
+                      <artifactId>com.io7m.northpike.packaging.shell.executable.windows.x86_64</artifactId>
                       <version>${project.version}</version>
                       <classifier>windows-x86_64</classifier>
                       <type>zip</type>
