@@ -27,9 +27,9 @@
     <packaging.appLongName>Northpike Shell</packaging.appLongName>
     <packaging.archiveType>ZIP</packaging.archiveType>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
-    <packaging.icon128>${project.basedir}/../src/site/resources/icon.ico</packaging.icon128>
-    <packaging.icon32>${project.basedir}/../src/site/resources/icon.ico</packaging.icon32>
-    <packaging.icon64>${project.basedir}/../src/site/resources/icon.ico</packaging.icon64>
+    <packaging.icon128>${project.basedir}/../src/site/resources/shell.ico</packaging.icon128>
+    <packaging.icon32>${project.basedir}/../src/site/resources/shell.ico</packaging.icon32>
+    <packaging.icon64>${project.basedir}/../src/site/resources/shell.ico</packaging.icon64>
     <packaging.outputDirectory>${project.build.directory}</packaging.outputDirectory>
     <packaging.resourceDirectory>${project.build.directory}/app-resources</packaging.resourceDirectory>
     <packaging.outputWixFile>${project.build.directory}/output.xml</packaging.outputWixFile>
@@ -43,25 +43,29 @@
       <artifactId>com.io7m.northpike.packaging.support</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>com.io7m.northpike.packaging.shell.executable.windows.x86_64</artifactId>
-      <version>${project.version}</version>
-      <classifier>windows-x86_64</classifier>
-      <type>zip</type>
-    </dependency>
   </dependencies>
 
   <profiles>
     <profile>
       <id>msi.windows.x86_64</id>
+
       <activation>
         <os>
           <family>windows</family>
           <arch>amd64</arch>
         </os>
       </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>com.io7m.northpike.packaging.shell.executable.windows.x86_64</artifactId>
+          <version>${project.version}</version>
+          <classifier>windows-x86_64</classifier>
+          <type>zip</type>
+        </dependency>
+      </dependencies>
+
       <build>
         <plugins>
           <plugin>

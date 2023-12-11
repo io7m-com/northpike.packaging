@@ -28,9 +28,9 @@
     <packaging.archiveType>TGZ</packaging.archiveType>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
     <packaging.extrasDirectory>${project.build.directory}/app-extras</packaging.extrasDirectory>
-    <packaging.icon128>${project.basedir}/../src/site/resources/icon64.png</packaging.icon128>
-    <packaging.icon32>${project.basedir}/../src/site/resources/icon32.png</packaging.icon32>
-    <packaging.icon64>${project.basedir}/../src/site/resources/icon64.png</packaging.icon64>
+    <packaging.icon128>${project.basedir}/../src/site/resources/shell128.png</packaging.icon128>
+    <packaging.icon32>${project.basedir}/../src/site/resources/shell32.png</packaging.icon32>
+    <packaging.icon64>${project.basedir}/../src/site/resources/shell64.png</packaging.icon64>
     <packaging.jars>${packaging.distribution}/northpike-shell/lib</packaging.jars>
     <packaging.jdk>${project.build.directory}/jdks/temurin-jdk/jdk-${packaging.javaVersion}</packaging.jdk>
     <packaging.jre>${project.build.directory}/jdks/temurin-jre/jdk-${packaging.javaVersion}-jre</packaging.jre>
