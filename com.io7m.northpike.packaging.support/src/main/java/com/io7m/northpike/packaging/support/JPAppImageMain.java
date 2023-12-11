@@ -66,7 +66,8 @@ public final class JPAppImageMain
 
   }
 
-  private enum ArchiveType {
+  private enum ArchiveType
+  {
     TGZ,
     ZIP
   }

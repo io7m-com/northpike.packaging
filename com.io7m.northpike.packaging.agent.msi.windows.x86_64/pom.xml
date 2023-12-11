@@ -24,6 +24,7 @@
     <packaging.platform.os>windows</packaging.platform.os>
     <packaging.platform.arch>x86_64</packaging.platform.arch>
     <packaging.appName>northpike-agent</packaging.appName>
+    <packaging.appLongName>Northpike Agent</packaging.appLongName>
     <packaging.archiveType>ZIP</packaging.archiveType>
     <packaging.distribution>${project.build.directory}/distribution</packaging.distribution>
     <packaging.icon128>${project.basedir}/../src/site/resources/icon.ico</packaging.icon128>
@@ -31,6 +32,9 @@
     <packaging.icon64>${project.basedir}/../src/site/resources/icon.ico</packaging.icon64>
     <packaging.outputDirectory>${project.build.directory}</packaging.outputDirectory>
     <packaging.resourceDirectory>${project.build.directory}/app-resources</packaging.resourceDirectory>
+    <packaging.outputWixFile>${project.build.directory}/output.xml</packaging.outputWixFile>
+    <packaging.outputMSIFile>${project.build.directory}/northpike-agent_${project.version}_windows-x86_64.msi</packaging.outputMSIFile>
+    <packaging.upgradeCode>304c8008-636e-4463-89c1-4e585a7319bc</packaging.upgradeCode>
   </properties>
 
   <dependencies>
@@ -38,6 +42,14 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>com.io7m.northpike.packaging.support</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.northpike.packaging.agent.executable.windows.x86_64</artifactId>
+      <version>${project.version}</version>
+      <classifier>windows-x86_64</classifier>
+      <type>zip</type>
     </dependency>
   </dependencies>
 
@@ -63,7 +75,33 @@
                   <goal>write-project-properties</goal>
                 </goals>
                 <configuration>
-                  <outputFile>${project.build.directory}/inno.properties</outputFile>
+                  <outputFile>${project.build.directory}/wix.properties</outputFile>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>${project.groupId}</groupId>
+                      <artifactId>com.io7m.northpike.packaging.agent.executable.windows.x86_64</artifactId>
+                      <version>${project.version}</version>
+                      <classifier>windows-x86_64</classifier>
+                      <type>zip</type>
+                    </artifactItem>
+                  </artifactItems>
+                  <outputDirectory>${packaging.distribution}</outputDirectory>
                 </configuration>
               </execution>
             </executions>
@@ -80,9 +118,25 @@
                   <goal>java</goal>
                 </goals>
                 <configuration>
-                  <mainClass>com.io7m.northpike.packaging.support.InnoSetupMain</mainClass>
+                  <mainClass>com.io7m.northpike.packaging.support.WiXMain</mainClass>
                   <arguments>
-                    <argument>${project.build.directory}/jpackage.properties</argument>
+                    <argument>${project.build.directory}/wix.properties</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>exec-wix</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>wix.exe</executable>
+                  <arguments>
+                    <argument>build</argument>
+                    <argument>${packaging.outputWixFile}</argument>
+                    <argument>-out</argument>
+                    <argument>${packaging.outputMSIFile}</argument>
                   </arguments>
                 </configuration>
               </execution>

@@ -184,6 +184,7 @@
                       <file>
                         ${project.build.directory}/northpike-agent_${project.version}_windows-x86_64.zip
                       </file>
+                      <classifier>windows-x86_64</classifier>
                       <type>zip</type>
                     </artifact>
                   </artifacts>
