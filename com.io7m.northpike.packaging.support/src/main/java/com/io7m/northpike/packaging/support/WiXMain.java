@@ -152,7 +152,7 @@ public final class WiXMain implements Callable<Void>
 
     {
       xmlOutput.writeStartElement(WIX_NAMESPACE, "StandardDirectory");
-      xmlOutput.writeAttribute("Id", "ProgramFiles6432Folder");
+      xmlOutput.writeAttribute("Id", "ProgramFilesFolder");
 
       {
         xmlOutput.writeStartElement(WIX_NAMESPACE, "Directory");
