@@ -9,7 +9,7 @@
   <parent>
     <groupId>com.io7m.northpike.packaging</groupId>
     <artifactId>com.io7m.northpike.packaging</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
   </parent>
   <artifactId>com.io7m.northpike.packaging.agent.msi.windows.x86_64</artifactId>
 

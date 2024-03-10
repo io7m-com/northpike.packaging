@@ -13,7 +13,7 @@
 
   <groupId>com.io7m.northpike.packaging</groupId>
   <artifactId>com.io7m.northpike.packaging</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>com.io7m.northpike.packaging</name>
@@ -33,7 +33,7 @@
 
   <properties>
     <io7m.api.previousVersion>${project.version}</io7m.api.previousVersion>
-
+    <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
     <packaging.appVersion>${project.version}</packaging.appVersion>
     <packaging.javaVersion>21.0.1+12</packaging.javaVersion>
     <packaging.scriptsURL>${project.scm.url}</packaging.scriptsURL>
