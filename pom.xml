@@ -36,7 +36,7 @@
     <io7m.api.previousVersion>${project.version}</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
     <packaging.appVersion>${project.version}</packaging.appVersion>
-    <packaging.javaVersion>21.0.2+13</packaging.javaVersion>
+    <packaging.javaVersion>21.0.3+9</packaging.javaVersion>
     <packaging.scriptsURL>${project.scm.url}</packaging.scriptsURL>
     <packaging.sourceURL>${project.distributionManagement.site.url}</packaging.sourceURL>
   </properties>
