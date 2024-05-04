@@ -33,8 +33,10 @@
   </modules>
 
   <properties>
+    <!-- Configuration. -->
     <io7m.api.previousVersion>${project.version}</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
+
     <packaging.appVersion>${project.version}</packaging.appVersion>
     <packaging.javaVersion>21.0.3+9</packaging.javaVersion>
     <packaging.scriptsURL>${project.scm.url}</packaging.scriptsURL>
@@ -49,9 +51,9 @@
   </licenses>
 
   <scm>
-    <url>https://www.github.com/io7m/northpike.packaging</url>
-    <connection>scm:git:https://www.github.com/io7m/northpike.packaging</connection>
-    <developerConnection>scm:git:https://www.github.com/io7m/northpike.packaging</developerConnection>
+    <url>https://www.github.com/io7m-com/northpike.packaging</url>
+    <connection>scm:git:https://www.github.com/io7m-com/northpike.packaging</connection>
+    <developerConnection>scm:git:https://www.github.com/io7m-com/northpike.packaging</developerConnection>
   </scm>
 
   <developers>
@@ -64,7 +66,7 @@
   </developers>
 
   <issueManagement>
-    <url>https://www.github.com/io7m/northpike.packaging/issues</url>
+    <url>https://www.github.com/io7m-com/northpike.packaging/issues</url>
     <system>GitHub Issues</system>
   </issueManagement>
 
@@ -86,7 +88,7 @@
 
   <ciManagement>
     <system>GitHub Actions</system>
-    <url>https://www.github.com/northpike.packaging/actions</url>
+    <url>https://www.github.com/io7m-com/northpike.packaging/actions</url>
   </ciManagement>
 
   <dependencyManagement>
